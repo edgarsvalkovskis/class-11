@@ -43,10 +43,14 @@ if (localStorage.getItem("products") === null) {
   new Product("wine-glass", 0, 0);
 } else {
   const productsLS = JSON.parse(localStorage.getItem("products"));
-// do something with the productLS[i]
-for(let i = 0; i < productsLS.length; i++){
-  new Product(productsLS[i].name, productsLS[i].views, productsLS[i].clicks)
+  // for each item in the productsLS array, make a new Product
+  for (let i = 0; i < productsLS.length; i++) {
+    // create a new product for each item in the array
+    //(and the Product function automatically adds it to the producst array)
+    new Product(productsLS[i].name, productsLS[i].views, productsLS[i].clicks);
+  }
 }
+
 // function that randomly gets a index for an item in item
 function randomProdIdx() {
   return Math.floor(Math.random() * products.length);
@@ -86,8 +90,9 @@ function handleImgClick(event) {
   // check if the user has run out of clicks
   if (userClicks === maxClicks) {
     alert("You have run out of votes");
-    renderChart();
-    // TODO: put my products array into localStorage
+
+    // take our array after we have updated the clicks and views, and add to localStorage
+    localStorage.setItem("products", JSON.stringify(products));
     return; // end the function here and don't run the rest
   }
 
@@ -114,39 +119,39 @@ img2.addEventListener("click", handleImgClick);
 img3.addEventListener("click", handleImgClick);
 
 // function to create a new chart
-function renderChart() {
-  const ctx = document.getElementById("myChart");
+// function renderChart() {
+//   const ctx = document.getElementById("myChart");
 
-  const labels = [];
-  const views = [];
-  const clicks = [];
+//   const labels = [];
+//   const views = [];
+//   const clicks = [];
 
-  // loop through my products array and add in the label, views and clicks data to my arrays
-  for (let i = 0; i < products.length; i++) {
-    labels.push(products[i].name);
-    views.push(products[i].views);
-    clicks.push(products[i].clicks);
-  }
+//   // loop through my products array and add in the label, views and clicks data to my arrays
+//   for (let i = 0; i < products.length; i++) {
+//     labels.push(products[i].name);
+//     views.push(products[i].views);
+//     clicks.push(products[i].clicks);
+//   }
 
-  new Chart(ctx, {
-    type: "bar",
-    data: {
-      labels: labels,
-      datasets: [
-        {
-          label: "# of views",
-          data: views,
-          borderWidth: 1,
-        },
-        {
-          type: "line",
-          label: "# of clicks",
-          data: clicks,
-          borderWidth: 1,
-        },
-      ],
-    },
-  });
-}
+//   new Chart(ctx, {
+//     type: "bar",
+//     data: {
+//       labels: labels,
+//       datasets: [
+//         {
+//           label: "# of views",
+//           data: views,
+//           borderWidth: 1,
+//         },
+//         {
+//           type: "line",
+//           label: "# of clicks",
+//           data: clicks,
+//           borderWidth: 1,
+//         },
+//       ],
+//     },
+//   });
+// }
 
 renderProducts();
